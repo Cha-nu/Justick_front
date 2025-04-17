@@ -20,4 +20,12 @@
     transition: all 0.3s ease;
     font-weight: bold;
   }
-  
+
+  .custom-button {
+    color: #2DB400;
+    border-color: #2DB400;
+  }
+  .custom-success:focus {
+    border-color: #28a745; /* Bootstrap success 색상 */
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+  }

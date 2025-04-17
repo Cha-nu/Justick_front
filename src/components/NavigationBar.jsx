@@ -23,15 +23,17 @@ const NavigationBar = () => {
       className={`bg-body-tertiary ${navbarShrink ? 'navbar-shrink' : 'navbar-large'}`}
     >
       <Container fluid>
-        <Navbar.Brand href="/" className="navbar-brand-custom">Ttack Dae!</Navbar.Brand>
+        <Navbar.Brand href="/" className="navbar-brand-custom">TTack Dae</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
           </Nav>
           <Form className="d-flex">
-            <Form.Control type="search" placeholder="Search" className="me-2" aria-label="Search" />
-            <Button variant="outline-primary">Search</Button>
+            <Form.Control type="search" placeholder="Search" className="me-2 custom-success" aria-label="Search" />
+            <Button className="custom-button" variant="outline-success">
+              Search
+            </Button>
           </Form>
         </Navbar.Collapse>
       </Container>
