@@ -58,10 +58,7 @@ const MonthlyGraph = ({ data, preData }) => {
 
   return (
     <div>
-      <Container fluid style={{ textAlign: 'left', marginTop: '40px' }}>
-        <h5 style={{ fontWeight: 'bold' }}>월간 그래프</h5>
-      </Container>
-      <div style={{ width: '100vw', height: 250 }}>
+      <div style={{ width: '85vw', height: 250, margin: '0 auto' }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={mergedData} margin={{ top: 30, right: 30, left: 0, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />

@@ -18,7 +18,7 @@ export const IntroSection = styled.div`
   align-items: center;
 `;
 
-// 첫 번째 줄 타이틀 (부 제목)
+// 두 번째 줄 타이틀 (부 제목)
 export const IntroTitle1 = styled.div`
   font-size: 46px;
   font-weight: 600;
@@ -28,11 +28,11 @@ export const IntroTitle1 = styled.div`
   @media (max-width: 520px) { font-size: 20px; }
 `;
 
-// 두 번째 줄 타이틀 (제목)
+// 첫 번째 줄 타이틀 (제목)
 export const IntroTitle2 = styled.div`
   font-size: 44px;
   font-weight: 500;
-  margin-top: 10px;
+  margin-top: -20px;
   white-space: nowrap;
   @media (max-width: 1280px) { font-size: 22px; }
   @media (max-width: 768px) { font-size: 20px; }
@@ -44,11 +44,12 @@ export const IntroSearchBar = styled.input`
   margin-top: 55px;
   margin-bottom: 30px; 
   padding: 18px 40px;
+  height: 65px;
   width: 100%;             
   max-width: 450px; 
-  border: 2px solid #2DB400;
+  border: 1px solid #2DB400;
   border-radius: 9999px;
-  font-size: 20px;
+  font-size: 17px;
   outline: none;
   text-align: left;
   white-space: nowrap;
@@ -76,7 +77,7 @@ export const CategoryWrapper = styled.div`
   overflow-x: auto;
   padding: 8px 16px;
   &::-webkit-scrollbar {
-    height: 6px;
+    height: 2px;
   }
   &::-webkit-scrollbar-thumb {
     background-color: rgba(0,0,0,0.1);
@@ -89,8 +90,8 @@ export const CategoryWrapper = styled.div`
 
 // 동그란 카테고리 버튼
 export const CategoryCircle = styled.div`
-  width: 160px;
-  height: 160px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   background-color: white;
   display: flex;
@@ -130,7 +131,8 @@ export const CardSectionWithWeather = styled.div`
 
 // 회색 박스 (카드 포함)
 export const CardWrapperBox = styled.div`
-  background-color: #f5f5f5;
+  background-color: white;
+  border: 1px solid #e0e0e0;
   padding: 40px 24px 24px; /* 위쪽 padding 늘림 */
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -144,7 +146,8 @@ export const CardWrapperBox = styled.div`
 export const WeatherBox = styled.div`
   min-width: 200px;
   min-height: 100%; 
-  background: #f5f5f5;
+  background: white/*#f5f5f5*/;
+  border: 1px solid #e0e0e0;
   padding: 16px 20px;
   border-radius: 16px;
   font-size: 14px;

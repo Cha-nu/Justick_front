@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import mockData from './mockData';
 import weatherData from './weatherData';
 import PriceCard from './PriceCard';
+import { FaSearch } from 'react-icons/fa';
 import {
   MainPageWrapper,
   IntroSection,
