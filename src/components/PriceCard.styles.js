@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const CardWrapper = styled.div`
   display: flex;
   justify-content: space-between;     // 좌우로 분리 (상품 정보 vs 변화 정보)
-  align-items: flex-start;
+  align-items: center;
   padding: 16px;
   border-radius: 16px;                 // 둥근 테두리
   width: 192px;
@@ -23,6 +23,7 @@ export const CardWrapper = styled.div`
 export const ItemInfo = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 10px;
 `;
 
 //  품목 이름 (예: 배추, 고추)

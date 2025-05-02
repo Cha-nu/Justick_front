@@ -57,108 +57,108 @@ const MainPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       let itemList = [];
-/*
-      try {
-        const res = await fetch(`http://211.211.151.18:2022/api/cabbage/high-prices`);
-        const data = await res.json();
-        const latest = data[0];
-
-        if (latest) {
-          const year = latest?.year;
-          const month = latest?.month?.toString().padStart(2, '0');
-          const day = latest?.day?.toString().padStart(2, '0');
-          setDate(`${year}-${month}-${day}`);
-        }
-
-        itemList.push({
-          id: 9991,
-          name: "배추",
-          unit: "10kg",
-          grade: "high",
-          todayPrice: `${parseInt(latest?.averagePrice || 0).toLocaleString()}원`,
-        });
-      } catch (err) {
-        console.error("배추 High-Prices API 실패:", err);
-        itemList.push({
-          id: 9991,
-          name: "배추",
-          unit: "10kg",
-          grade: "high",
-          todayPrice: '연결실패',
-        });
-      }
-
-      try {
-        const res = await fetch(`http://211.211.151.18:2022/api/cabbage/special-prices`);
-        const data = await res.json();
-        const latest = data[0];
-
-        itemList.push({
-          id: 9992,
-          name: "배추",
-          unit: "포기2",
-          grade: "special",
-          todayPrice: `${parseInt(latest?.averagePrice || 0).toLocaleString()}원`,
-        });
-      } catch (err) {
-        console.error("배추 Special-Prices API 실패:", err);
-        itemList.push({
-          id: 9992,
-          name: "배추",
-          unit: "포기2",
-          grade: "special",
-          todayPrice: '연결실패',
-        });
-      }
-
-      try {
-        const res = await fetch(`http://211.211.151.18:2022/api/onion/high-prices`);
-        const data = await res.json();
-        const latest = data[0];
-
-        itemList.push({
-          id: 9993,
-          name: "양파",
-          unit: "10kg",
-          grade: "high",
-          todayPrice: `${parseInt(latest?.averagePrice || 0).toLocaleString()}원`,
-        });
-      } catch (err) {
-        console.error("양파 High-Prices API 실패:", err);
-        itemList.push({
-          id: 9993,
-          name: "양파",
-          unit: "10kg",
-          grade: "high",
-          todayPrice: '연결실패',
-        });
-      }
-
-    
-      try {
-        const res = await fetch(`http://211.211.151.18:2022/api/onion/special-prices`);
-        const data = await res.json();
-        const latest = data[0];
-
-        itemList.push({
-          id: 9994,
-          name: "양파",
-          unit: "포기2",
-          grade: "special",
-          todayPrice: `${parseInt(latest?.averagePrice || 0).toLocaleString()}원`,
-        });
-      } catch (err) {
-        console.error("양파 Special-Prices API 실패:", err);
-        itemList.push({
-          id: 9994,
-          name: "양파",
-          unit: "포기2",
-          grade: "special",
-          todayPrice: '연결실패',
-        });
-      }
-*/
+      /*
+            try {
+              const res = await fetch(`http://211.211.151.18:2022/api/cabbage/high-prices`);
+              const data = await res.json();
+              const latest = data[0];
       
+              if (latest) {
+                const year = latest?.year;
+                const month = latest?.month?.toString().padStart(2, '0');
+                const day = latest?.day?.toString().padStart(2, '0');
+                setDate(`${year}-${month}-${day}`);
+              }
+      
+              itemList.push({
+                id: 9991,
+                name: "배추",
+                unit: "10kg",
+                grade: "high",
+                todayPrice: `${parseInt(latest?.averagePrice || 0).toLocaleString()}원`,
+              });
+            } catch (err) {
+              console.error("배추 High-Prices API 실패:", err);
+              itemList.push({
+                id: 9991,
+                name: "배추",
+                unit: "10kg",
+                grade: "high",
+                todayPrice: '연결실패',
+              });
+            }
+      
+            try {
+              const res = await fetch(`http://211.211.151.18:2022/api/cabbage/special-prices`);
+              const data = await res.json();
+              const latest = data[0];
+      
+              itemList.push({
+                id: 9992,
+                name: "배추",
+                unit: "포기2",
+                grade: "special",
+                todayPrice: `${parseInt(latest?.averagePrice || 0).toLocaleString()}원`,
+              });
+            } catch (err) {
+              console.error("배추 Special-Prices API 실패:", err);
+              itemList.push({
+                id: 9992,
+                name: "배추",
+                unit: "포기2",
+                grade: "special",
+                todayPrice: '연결실패',
+              });
+            }
+      
+            try {
+              const res = await fetch(`http://211.211.151.18:2022/api/onion/high-prices`);
+              const data = await res.json();
+              const latest = data[0];
+      
+              itemList.push({
+                id: 9993,
+                name: "양파",
+                unit: "10kg",
+                grade: "high",
+                todayPrice: `${parseInt(latest?.averagePrice || 0).toLocaleString()}원`,
+              });
+            } catch (err) {
+              console.error("양파 High-Prices API 실패:", err);
+              itemList.push({
+                id: 9993,
+                name: "양파",
+                unit: "10kg",
+                grade: "high",
+                todayPrice: '연결실패',
+              });
+            }
+      
+          
+            try {
+              const res = await fetch(`http://211.211.151.18:2022/api/onion/special-prices`);
+              const data = await res.json();
+              const latest = data[0];
+      
+              itemList.push({
+                id: 9994,
+                name: "양파",
+                unit: "포기2",
+                grade: "special",
+                todayPrice: `${parseInt(latest?.averagePrice || 0).toLocaleString()}원`,
+              });
+            } catch (err) {
+              console.error("양파 Special-Prices API 실패:", err);
+              itemList.push({
+                id: 9994,
+                name: "양파",
+                unit: "포기2",
+                grade: "special",
+                todayPrice: '연결실패',
+              });
+            }
+      */
+
       const allowedNames = ['배추', '고추', '고추3', '고추2', '무', '양파', '당근', '토마토', '고구마'];
       const mock = mockData.filter(item => allowedNames.includes(item.name));/* && !['배추', '양파'].includes(item.name));*/
 
@@ -205,7 +205,7 @@ const MainPage = () => {
     <MainPageWrapper>
       <IntroSection>
         <IntroTitle2>가락시장 도매가</IntroTitle2>
-        <IntroTitle1>농산물 예측서비스 <span style={{ color: '#2DB400' }}>딱대</span></IntroTitle1>
+        <IntroTitle1>농산물 예측서비스 <span style={{ color: '#2DB400' }}>"딱대"</span></IntroTitle1>
         <IntroSearchBar
           placeholder="품목을 입력하세요."
           value={searchTerm}
@@ -277,6 +277,7 @@ const MainPage = () => {
           <div>풍속: {weather.windSpeed}m/s</div>
           <img src={weather.icon} alt={weather.weather} style={{ width: '30px', height: '30px' }} />
         </WeatherBox>
+
       </CardSectionWithWeather>
     </MainPageWrapper>
   );

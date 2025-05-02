@@ -1,34 +1,28 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend
+  LineChart, Line, XAxis, YAxis, CartesianGrid,
+  Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 
-const DailyGraph = ({ data, preData }) => {
-  const mergedData = data.map((item, index) => ({
-    date: item.date,
-    price: item.price,
-    prePrice: preData[index]?.price ?? null,
-  }));
+const DailyGraph = ({ data, preData, showPrediction }) => {
+  const mergedData = data.map((item, index) => {
+    const date = item.date;
+    const price = item.price ?? null;
+    const prePrice = preData[index]?.price ?? null;
 
-  const renderDailyDot = (props) => {
+    return {
+      date,
+      price: price === undefined ? null : price,
+      prePrice: prePrice === undefined ? null : prePrice,
+    };
+  });
+
+  const renderDot = (color) => (props) => {
     const { cx, cy } = props;
-    return <circle cx={cx} cy={cy} r={4} fill="#4287f5" />;
+    return <circle cx={cx} cy={cy} r={4} fill={color} />;
   };
 
-  const renderPreDailyDot = (props) => {
-    const { cx, cy } = props;
-    return <circle cx={cx} cy={cy} r={4} fill="orange" />;
-  };
-
-  const renderDailyLabel = (props) => {
+  const renderLabel = (props) => {
     const { x, y, value } = props;
     return (
       <text x={x} y={y - 10} fill="black" textAnchor="middle" fontSize={12}>
@@ -38,45 +32,40 @@ const DailyGraph = ({ data, preData }) => {
   };
 
   return (
-    <div>
-      
-      <div style={{ width: '85vw', height: 250, margin: '0 auto' }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={mergedData} margin={{ top: 30, right: 30, left: 40, bottom: 5 }}>
-            <CartesianGrid 
-               strokeDasharray="3 3"
-               vertical={false}
-            />
-            <XAxis 
-              dataKey="date"
-              padding={{ left: 30, right: 30 }} 
-            />
-            <YAxis domain={['auto', 'auto']} />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="price"
-              stroke="#4287f5"
-              strokeWidth={2}
-              dot={renderDailyDot}
-              activeDot={{ r: 6 }}
-              label={renderDailyLabel}
-              name="현재가"
-            />
+    <div style={{ width: '85vw', height: 250, margin: '0 auto' }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={mergedData} margin={{ top: 30, right: 30, left: 40, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+          <XAxis dataKey="date" padding={{ left: 30, right: 30 }} />
+          <YAxis domain={['auto', 'auto']} />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="price"
+            stroke="#4287f5"
+            strokeWidth={2}
+            dot={renderDot("#4287f5")}
+            activeDot={{ r: 6 }}
+            label={renderLabel}
+            name="현재가"
+            connectNulls={false}
+          />
+          {showPrediction && (
             <Line
               type="monotone"
               dataKey="prePrice"
               stroke="orange"
               strokeWidth={2}
-              dot={renderPreDailyDot}
+              dot={renderDot("orange")}
               activeDot={{ r: 6 }}
-              label={renderDailyLabel}
+              label={renderLabel}
               name="예측가"
+              connectNulls={false}
             />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+          )}
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 };

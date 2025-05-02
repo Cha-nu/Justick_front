@@ -131,11 +131,11 @@ export const CardSectionWithWeather = styled.div`
 
 // 회색 박스 (카드 포함)
 export const CardWrapperBox = styled.div`
-  background-color: white;
-  border: 1px solid #e0e0e0;
+  background-color:#f5f5f5;
+  border: 1px solid #f5f5f5;
   padding: 40px 24px 24px; /* 위쪽 padding 늘림 */
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  /*box-shadow: 0 2px 8px rgba(0,0,0,0.05);*/
   max-width: calc((192px + 13px) * 4 + 48px);
   overflow-x: auto;
   position: relative;
@@ -144,14 +144,14 @@ export const CardWrapperBox = styled.div`
 
 // 날씨 정보 박스
 export const WeatherBox = styled.div`
-  min-width: 200px;
+  min-width: 400px;
   min-height: 100%; 
-  background: white/*#f5f5f5*/;
-  border: 1px solid #e0e0e0;
+  background: #f5f5f5/*#f5f5f5*/;
+  border: 1px solid #f5f5f5;
   padding: 16px 20px;
   border-radius: 16px;
   font-size: 14px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  /*box-shadow: 0 2px 8px rgba(0,0,0,0.05);*/
   line-height: 1.8;
   color: #333;
 
@@ -171,7 +171,7 @@ export const TitleRow = styled.div`
 // 드롭다운 버튼 (오늘(상))
 export const PeriodDropdown = styled.div`
   position: relative;
-  font-size: 35px;
+  font-size: 32px;
   font-weight: bold;
   color: #2563eb;
   border-bottom: 2px solid #2563eb;
@@ -221,7 +221,7 @@ export const GradeSmall = styled.span`
 
 // 제목 텍스트 (가락시장 도매가격)
 export const Title = styled.div`
-  font-size: 40px;
+  font-size: 35px;
   font-weight: bold;
   white-space: nowrap;
 `;

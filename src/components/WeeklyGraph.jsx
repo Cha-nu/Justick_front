@@ -1,45 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Container } from 'react-bootstrap';
+import React from 'react';
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend
+  LineChart, Line, XAxis, YAxis, CartesianGrid,
+  Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 
-const WeeklyGraph = ({ data, preData }) => {
-  const [cabbageData, setCabbageData] = useState([]);
+const WeeklyGraph = ({ data, preData, showPrediction }) => {
+  const mergedData = data.map((item, index) => {
+    const week = item.week;
+    const sales = item.sales ?? null;
+    const preSales = preData[index]?.sales ?? null;
 
-  useEffect(() => {
-    const fetchCabbageData = async () => {
-      try {
-        const res = await fetch("http://justick-env.eba-bahjbyqe.ap-northeast-2.elasticbeanstalk.com/api/cabbage/High-weekly");
-        const cabbage = await res.json();
-        const latest = cabbage[0];
-
-        const weeklyData = {
-          week: `Week ${new Date().getDate()}`,
-          sales: latest?.averagePrice || 0,
-        };
-
-        setCabbageData([weeklyData]);
-      } catch (err) {
-        console.error("배추 API 실패:", err);
-      }
+    return {
+      week,
+      sales: sales === undefined ? null : sales,
+      preSales: preSales === undefined ? null : preSales,
     };
-
-    fetchCabbageData();
-  }, []);
-
-  const mergedData = data.map((item, index) => ({
-    week: item.week,
-    sales: item.sales,
-    preSales: preData[index]?.sales ?? null,
-  }));
+  });
 
   const renderDot = (color) => (props) => {
     const { cx, cy } = props;
@@ -56,25 +32,26 @@ const WeeklyGraph = ({ data, preData }) => {
   };
 
   return (
-    <div>
-      <div style={{ width: '85vw', height: 250, margin: '0 auto' }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={mergedData} margin={{ top: 30, right: 30, left: 0, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="week" />
-            <YAxis domain={['auto', 'auto']} />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="sales"
-              stroke="#4287f5"
-              strokeWidth={2}
-              dot={renderDot("#4287f5")}
-              activeDot={{ r: 6 }}
-              label={renderLabel}
-              name="현재가"
-            />
+    <div style={{ width: '85vw', height: 250, margin: '0 auto' }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={mergedData} margin={{ top: 30, right: 30, left: 0, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="week" />
+          <YAxis domain={['auto', 'auto']} />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="sales"
+            stroke="#4287f5"
+            strokeWidth={2}
+            dot={renderDot("#4287f5")}
+            activeDot={{ r: 6 }}
+            label={renderLabel}
+            name="현재가"
+            connectNulls={false}
+          />
+          {showPrediction && (
             <Line
               type="monotone"
               dataKey="preSales"
@@ -84,10 +61,11 @@ const WeeklyGraph = ({ data, preData }) => {
               activeDot={{ r: 6 }}
               label={renderLabel}
               name="예측가"
+              connectNulls={false}
             />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+          )}
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 };
