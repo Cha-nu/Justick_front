@@ -18,18 +18,14 @@ const cardInfo = [
     unit: '(10kg 상품 기준)',
     diff: '+1,461',
     diffColor: 'red',
-    volume: '423톤',
     org: '농넷넷',
     date: '2025-04-30 기준',
   },
   {
     key: '반입량량',
     title: '가락시장 반입량',
-    price: '1,248원',
+    price: '1,22톤',
     unit: '(1kg 상품 기준)',
-    diff: '+748 ▲149.6%',
-    diffColor: 'red',
-    volume: '1톤',
     org: '농넷넷',
     date: '2025-04-29 기준',
   },
@@ -57,7 +53,6 @@ const cardInfo = [
   },
 ];
 
-// ✅ 주차 라벨 포맷: "2025-04-02" → "04월 02주차"
 const formatWeekLabel = (weekKey) => {
   const parts = weekKey.split('-');
   if (parts.length === 3) {
@@ -91,8 +86,6 @@ const DetailPage = () => {
   const [selectedCard, setSelectedCard] = useState('가락시장');
   const [hoveredCard, setHoveredCard] = useState(null);
 
-
-
   useEffect(() => {
     const fallbackItem = mockData.find(item => item.id === parseInt(id));
     if (!fallbackItem) {
@@ -114,22 +107,42 @@ const DetailPage = () => {
         .then(data => {
           const entries = Object.entries(data || {});
 
+          // ✅ 여기서 날짜 포맷을 "4월 9일"로 변경
           setDailyPriceData(
-            entries.map(([date, val]) => ({
-              date,
+            entries.map(([_, val]) => ({
+              date: `${val.month}월 ${val.day}일`,
               price: val.averagePrice,
+              gap: val.gap,
             }))
           );
 
           setDailyIntakeData(
-            entries.map(([date, val]) => ({
-              date,
+            entries.map(([_, val]) => ({
+              date: `${val.month}월 ${val.day}일`,
               price: val.intake,
             }))
           );
+
+          // ✅ 가장 마지막(최신) 데이터로 가락시장 카드 내용 수정
+          const latest = entries.at(-1);
+          if (latest) {
+            const [latestDate, latestVal] = latest;
+            const garakCard = cardInfo.find(card => card.key === '가락시장');
+            if (garakCard) {
+              garakCard.price = `${latestVal.averagePrice.toLocaleString()}원`;
+              garakCard.diff = `${latestVal.gap > 0 ? '+' : ''}${latestVal.gap.toLocaleString()}`;
+              garakCard.diffColor = latestVal.gap >= 0 ? 'red' : 'blue';
+              garakCard.date = `${latestVal.month}월 ${latestVal.day}일 기준`;
+            }
+            const intakeCard = cardInfo.find(card => card.key === '반입량량');
+            if (intakeCard) {
+              intakeCard.price = `${latestVal.intake.toLocaleString()}톤`;
+              intakeCard.date = `${latestVal.month}월 ${latestVal.day}일 기준`;
+            }
+          }
         });
 
-      // ✅ 주간 데이터 (최신 8개만)
+      // ✅ 주간 데이터
       fetch(`${SERVER_URL}/api/cabbage/${route}-weekly`)
         .then(res => res.json())
         .then(data => {
