@@ -217,9 +217,17 @@ const MainPage = () => {
 
   const handleSearchKeyDown = (e) => {
     if (e.key === 'Enter' && searchTerm.trim()) {
+      const term = searchTerm.trim().toLowerCase();
+      const isSpecial = term.endsWith('특');
+      const cleanName = isSpecial ? term.replace(/특$/, '') : term;
+      const gradeToSearch = isSpecial ? 'special' : 'high';
+
       const foundItem = data.find(
-        (item) => item.name.toLowerCase() === searchTerm.trim().toLowerCase()
+        (item) =>
+          item.name.toLowerCase() === cleanName &&
+          item.grade === gradeToSearch
       );
+
       if (foundItem) {
         navigate(`/detail/${foundItem.key}/${foundItem.grade}`);
       } else {

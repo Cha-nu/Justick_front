@@ -1,6 +1,5 @@
-// src/components/NavigationBar.jsx
 import React, { useState, useEffect } from 'react';
-import { Navbar, Container, Nav, Form, Button } from 'react-bootstrap';
+import { Navbar, Container, Nav } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './NavigationBar.css';
 
@@ -29,12 +28,6 @@ const NavigationBar = () => {
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
           </Nav>
-          <Form className="d-flex">
-            <Form.Control type="search" placeholder="Search" className="me-2 custom-success" aria-label="Search" />
-            <Button className="custom-button" variant="outline-success">
-              Search
-            </Button>
-          </Form>
         </Navbar.Collapse>
       </Container>
     </Navbar>
