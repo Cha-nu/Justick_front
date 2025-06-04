@@ -7,20 +7,21 @@ import { PageWrapper, PeriodButtons, PeriodButton, GraphSection } from './Detail
 import { Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const SERVER_URL = 'http://justick.myvnc.com:443/justick_spring';
+// const SERVER_URL = 'http://justick.myvnc.com:443/justick_spring';
+const SERVER_URL = '/justick_spring';
 
 const initialCardInfo = [
   {
     key: '가락시장',
     title: '가락시장 도매가격',
     unit: '(10kg 상품 기준)',
-    org: '농넷넷'
+    org: '농넷'
   },
   {
-    key: '반입량량',
+    key: '반입량',
     title: '가락시장 반입량',
     unit: '(1kg 상품 기준)',
-    org: '농넷넷'
+    org: '농넷'
   },
   {
     key: '소매',
@@ -104,7 +105,7 @@ const DetailPage = () => {
               date: `${latest.month}월 ${latest.day}일 기준`
             };
           }
-          if (card.key === '반입량량') {
+          if (card.key === '반입량') {
             return {
               ...card,
               price: `${latest.intake.toLocaleString()}톤`,
@@ -178,7 +179,7 @@ const DetailPage = () => {
       if (selectedPeriod === '주') return weeklyPriceData;
       return monthlyPriceData;
     }
-    if (selectedCard === '반입량량') {
+    if (selectedCard === '반입량') {
       if (selectedPeriod === '일') return dailyIntakeData;
       if (selectedPeriod === '주') return weeklyIntakeData;
       return monthlyIntakeData;
