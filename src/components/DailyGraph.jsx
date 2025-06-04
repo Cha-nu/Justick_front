@@ -5,32 +5,27 @@ import {
 } from 'recharts';
 
 const DailyGraph = ({ data, preData, showPrediction }) => {
-  const mergedData = data.map((item, index) => {
-    const date = item.date;
-    const price = item.price ?? null;
-    const prePrice = preData[index]?.price ?? null;
+  const mergedData = showPrediction
+    ? preData.map((preItem, index) => {
+      const date = data[index]?.date ?? preItem?.date ?? '';
+      const price = data[index]?.price ?? null;
+      const prePrice = preItem?.price ?? null;
 
-    return {
-      date,
-      price: price === undefined ? null : price,
-      prePrice: prePrice === undefined ? null : prePrice,
-    };
-  });
+      return {
+        date,
+        price,
+        prePrice,
+      };
+    })
+    : data.map((item) => ({
+      date: item.date,
+      price: item.price ?? null,
+    }));
 
   const renderDot = (color) => (props) => {
     const { value, cx, cy } = props;
     if (value == null) return null;
     return <circle cx={cx} cy={cy} r={4} fill={color} />;
-  };
-
-  const renderLabel = (props) => {
-    const { x, y, value } = props;
-    if (value == null) return null;
-    return (
-      <text x={x} y={y - 10} fill="black" textAnchor="middle" fontSize={12}>
-        {value}
-      </text>
-    );
   };
 
   return (
@@ -49,7 +44,6 @@ const DailyGraph = ({ data, preData, showPrediction }) => {
             strokeWidth={2}
             dot={renderDot("#4287f5")}
             activeDot={{ r: 6 }}
-            label={renderLabel}
             name="현재가"
             connectNulls={false}
           />
@@ -61,7 +55,6 @@ const DailyGraph = ({ data, preData, showPrediction }) => {
               strokeWidth={2}
               dot={renderDot("orange")}
               activeDot={{ r: 6 }}
-              label={renderLabel}
               name="예측가"
               connectNulls={false}
             />

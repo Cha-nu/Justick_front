@@ -5,32 +5,27 @@ import {
 } from 'recharts';
 
 const WeeklyGraph = ({ data, preData, showPrediction }) => {
-  const mergedData = data.map((item, index) => {
-    const week = item.week;
-    const sales = item.sales ?? null;
-    const preSales = preData[index]?.sales ?? null;
+  const mergedData = showPrediction
+    ? preData.map((preItem, index) => {
+      const week = data[index]?.week ?? preItem?.week ?? '';
+      const sales = data[index]?.sales ?? null;
+      const preSales = preItem?.sales ?? null;
 
-    return {
-      week,
-      sales: sales === undefined ? null : sales,
-      preSales: preSales === undefined ? null : preSales,
-    };
-  });
+      return {
+        week,
+        sales,
+        preSales,
+      };
+    })
+    : data.map((item) => ({
+      week: item.week,
+      sales: item.sales ?? null,
+    }));
 
   const renderDot = (color) => (props) => {
     const { value, cx, cy } = props;
     if (value == null) return null;
     return <circle cx={cx} cy={cy} r={4} fill={color} />;
-  };
-
-  const renderLabel = (props) => {
-    const { x, y, value } = props;
-    if (value == null) return null;
-    return (
-      <text x={x} y={y - 10} fill="black" textAnchor="middle" fontSize={12}>
-        {value}
-      </text>
-    );
   };
 
   return (
@@ -49,7 +44,6 @@ const WeeklyGraph = ({ data, preData, showPrediction }) => {
             strokeWidth={2}
             dot={renderDot("#4287f5")}
             activeDot={{ r: 6 }}
-            label={renderLabel}
             name="현재가"
             connectNulls={false}
           />
@@ -61,7 +55,6 @@ const WeeklyGraph = ({ data, preData, showPrediction }) => {
               strokeWidth={2}
               dot={renderDot("orange")}
               activeDot={{ r: 6 }}
-              label={renderLabel}
               name="예측가"
               connectNulls={false}
             />

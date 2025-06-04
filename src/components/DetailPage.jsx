@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import DailyGraph from './DailyGraph';
 import WeeklyGraph from './WeeklyGraph';
 import MonthlyGraph from './MonthlyGraph';
 import { PageWrapper, PeriodButtons, PeriodButton, GraphSection } from './DetailPageStyle';
 import { Card } from 'react-bootstrap';
+import NavigationBar from './NavigationBar'; // ⬅️ 추가
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// const SERVER_URL = 'http://justick.myvnc.com:2025/justick_spring';
 const SERVER_URL = 'http://justick.myvnc.com:2025/justick_spring';
 
+const apiProduceList = [
+  { name: '고구마', key: 'sweetPotato' },
+  { name: '양파', key: 'onion' },
+  { name: '배추', key: 'cabbage' },
+  { name: '감자', key: 'potato' },
+  { name: '무', key: 'radish' },
+  { name: '토마토', key: 'tomato' },
+];
+
+const GRADES = ['high', 'special'];
+
 const initialCardInfo = [
-  {
-    key: '가락시장',
-    title: '가락시장 도매가격',
-    unit: '(10kg 상품 기준)',
-    org: '농넷'
-  },
-  {
-    key: '반입량',
-    title: '가락시장 반입량',
-    unit: '(1kg 상품 기준)',
-    org: '농넷'
-  },
-  {
-    key: '소매',
-    title: '소매가격',
-    unit: '(1포기 상품 기준)',
-    org: 'KAMIS'
-  },
+  { key: '가락시장', title: '가락시장 도매가격', unit: '(10kg 상품 기준)', org: '농넷' },
+  { key: '반입량', title: '가락시장 반입량', unit: '(1kg 상품 기준)', org: '농넷' },
+  { key: '소매', title: '소매가격', unit: '(1포기 상품 기준)', org: 'KAMIS' },
 ];
 
 const formatWeekLabel = (weekKey) => {
@@ -46,6 +42,41 @@ const DetailPage = () => {
   const [selectedCard, setSelectedCard] = useState('가락시장');
   const [hoveredCard, setHoveredCard] = useState(null);
   const [cardInfo, setCardInfo] = useState(initialCardInfo);
+
+  const [searchData, setSearchData] = useState([]); // ⬅️ 검색용 데이터
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchSearchData = async () => {
+      try {
+        const results = await Promise.all(
+          apiProduceList.flatMap(({ name, key }) =>
+            GRADES.map((grade) => {
+              const url = `${SERVER_URL}/api/${key}/${grade}-prices`;
+              return fetch(url)
+                .then((res) => res.json())
+                .then((json) => {
+                  const latest = json.at(-1);
+                  if (!latest) return null;
+                  return {
+                    name,
+                    key,
+                    grade,
+                    date: `${latest.year}.${latest.month}.${latest.day}`,
+                  };
+                })
+                .catch(() => null);
+            })
+          )
+        );
+        setSearchData(results.filter(Boolean));
+      } catch (e) {
+        console.error('검색 데이터 로딩 오류:', e);
+      }
+    };
+
+    fetchSearchData();
+  }, []);
 
   const [dailyPriceData, setDailyPriceData] = useState([]);
   const [weeklyPriceData, setWeeklyPriceData] = useState([]);
@@ -127,44 +158,25 @@ const DetailPage = () => {
         });
 
         setCardInfo(newCardInfo);
-
         setDailyPriceData(priceData.map(val => ({ date: `${val.month}월 ${val.day}일`, price: val.averagePrice, gap: val.gap })));
         setDailyIntakeData(priceData.map(val => ({ date: `${val.month}월 ${val.day}일`, price: val.intake })));
         setPreDailyData(prePriceData.map(val => ({ date: `${val.month}월 ${val.day}일`, price: val.averagePrice })));
 
-        const weekFormat = data => Object.entries(data || {}).map(([key, val]) => ({
-          week: formatWeekLabel(key),
-          sales: val.averagePrice
-        }));
-
-        const intakeFormat = data => Object.entries(data || {}).map(([key, val]) => ({
-          week: formatWeekLabel(key),
-          sales: val.intake
-        }));
+        const weekFormat = data => Object.entries(data || {}).map(([key, val]) => ({ week: formatWeekLabel(key), sales: val.averagePrice }));
+        const intakeFormat = data => Object.entries(data || {}).map(([key, val]) => ({ week: formatWeekLabel(key), sales: val.intake }));
 
         setWeeklyPriceData(weekFormat(weeklyData));
         setWeeklyIntakeData(intakeFormat(weeklyData));
         setPreWeeklyData(weekFormat(preWeeklyData));
 
-        const monthFormat = data => Object.entries(data || {}).map(([key, val]) => ({
-          month: `${key}월`,
-          avgPrice: val.averagePrice
-        }));
-
-        const intakeMonthFormat = data => Object.entries(data || {}).map(([key, val]) => ({
-          month: `${key}월`,
-          avgPrice: val.intake
-        }));
+        const monthFormat = data => Object.entries(data || {}).map(([key, val]) => ({ month: `${key}월`, avgPrice: val.averagePrice }));
+        const intakeMonthFormat = data => Object.entries(data || {}).map(([key, val]) => ({ month: `${key}월`, avgPrice: val.intake }));
 
         setMonthlyPriceData(monthFormat(monthlyData));
         setMonthlyIntakeData(intakeMonthFormat(monthlyData));
         setPreMonthlyData(monthFormat(preMonthlyData));
 
-        setDailyRetailData(retailData.map(val => ({
-          date: `${val.month}월 ${val.day}일`,
-          price: val.averagePrice
-        })));
-
+        setDailyRetailData(retailData.map(val => ({ date: `${val.month}월 ${val.day}일`, price: val.averagePrice })));
       } catch (e) {
         console.error('데이터 로딩 오류:', e);
       }
@@ -174,120 +186,89 @@ const DetailPage = () => {
   }, [key, grade]);
 
   const getData = () => {
-    if (selectedCard === '가락시장') {
-      if (selectedPeriod === '일') return dailyPriceData;
-      if (selectedPeriod === '주') return weeklyPriceData;
-      return monthlyPriceData;
-    }
-    if (selectedCard === '반입량') {
-      if (selectedPeriod === '일') return dailyIntakeData;
-      if (selectedPeriod === '주') return weeklyIntakeData;
-      return monthlyIntakeData;
-    }
-    if (selectedCard === '소매') {
-      return dailyRetailData;
-    }
+    if (selectedCard === '가락시장') return selectedPeriod === '일' ? dailyPriceData : selectedPeriod === '주' ? weeklyPriceData : monthlyPriceData;
+    if (selectedCard === '반입량') return selectedPeriod === '일' ? dailyIntakeData : selectedPeriod === '주' ? weeklyIntakeData : monthlyIntakeData;
+    if (selectedCard === '소매') return dailyRetailData;
     return [];
   };
 
   const getPreData = () => {
-    if (selectedCard === '가락시장') {
-      if (selectedPeriod === '일') return preDailyData;
-      if (selectedPeriod === '주') return preWeeklyData;
-      return preMonthlyData;
-    }
+    if (selectedCard === '가락시장') return selectedPeriod === '일' ? preDailyData : selectedPeriod === '주' ? preWeeklyData : preMonthlyData;
     return [];
   };
 
   const showPrediction = selectedCard === '가락시장';
 
   return (
-    <PageWrapper>
-      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px', maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
-        {cardInfo.map(card => {
-          const isSelected = selectedCard === card.key;
-          const isHovered = hoveredCard === card.key;
+    <>
+      <NavigationBar data={searchData} />
+      <PageWrapper>
+        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px', maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+          {cardInfo.map(card => {
+            const isSelected = selectedCard === card.key;
+            const isHovered = hoveredCard === card.key;
+            return (
+              <Card
+                key={card.key}
+                onClick={() => {
+                  setSelectedCard(card.key);
+                  setSelectedPeriod('일');
+                }}
+                onMouseEnter={() => setHoveredCard(card.key)}
+                onMouseLeave={() => setHoveredCard(null)}
+                style={{
+                  cursor: 'pointer',
+                  maxWidth: '220px',
+                  width: '100%',
+                  height: '280px',
+                  border: isSelected ? '1px solid #0d6efd' : '1px solid transparent',
+                  backgroundColor: isSelected ? '#ffffff' : isHovered ? '#eff1f3' : '#f8f9fa',
+                  boxShadow: isSelected ? '0 0 10px rgba(13,110,253,0.25)' : 'none',
+                  borderRadius: '12px',
+                  transition: '0.2s',
+                  padding: '16px',
+                  boxSizing: 'border-box',
+                }}
+              >
+                <Card.Body>
+                  <Card.Title style={{ fontSize: '16px', fontWeight: '600' }}>{card.title}</Card.Title>
+                  <div style={{ fontSize: '22px', fontWeight: 'bold', marginTop: '8px' }}>{card.price || '-'}</div>
+                  <div style={{ fontSize: '12px', color: '#555' }}>{card.unit}</div>
+                  <div style={{ fontSize: '13px', color: card.diffColor === 'red' ? '#d32f2f' : '#1976d2', fontWeight: 'bold', marginTop: '8px' }}>
+                    전일대비 {card.diff || '-'}
+                  </div>
+                  <div style={{ fontSize: '13px', fontWeight: '500', marginTop: '10px' }}>{card.org}</div>
+                  <div style={{ fontSize: '12px', color: '#888' }}>{card.date || ''}</div>
+                </Card.Body>
+              </Card>
+            );
+          })}
+        </div>
 
-          return (
-            <Card
-              key={card.key}
-              onClick={() => {
-                setSelectedCard(card.key);
-                setSelectedPeriod('일');
-              }}
-
-              onMouseEnter={() => setHoveredCard(card.key)}
-              onMouseLeave={() => setHoveredCard(null)}
-              style={{
-                cursor: 'pointer',
-                maxWidth: '220px',
-                width: '100%',
-                height: '280px',
-                border: isSelected ? '1px solid #0d6efd' : '1px solid transparent',
-                backgroundColor: isSelected ? '#ffffff' : isHovered ? '#eff1f3' : '#f8f9fa',
-                boxShadow: isSelected ? '0 0 10px rgba(13,110,253,0.25)' : 'none',
-                borderRadius: '12px',
-                transition: '0.2s',
-                padding: '16px',
-                boxSizing: 'border-box',
-              }}
-            >
-              <Card.Body>
-                <Card.Title style={{ fontSize: '16px', fontWeight: '600' }}>{card.title}</Card.Title>
-                <div style={{ fontSize: '22px', fontWeight: 'bold', marginTop: '8px' }}>{card.price || '-'}</div>
-                <div style={{ fontSize: '12px', color: '#555' }}>{card.unit}</div>
-                <div style={{ fontSize: '13px', color: card.diffColor === 'red' ? '#d32f2f' : '#1976d2', fontWeight: 'bold', marginTop: '8px' }}>
-                  전일대비 {card.diff || '-'}
-                </div>
-                <div style={{ fontSize: '13px', fontWeight: '500', marginTop: '10px' }}>{card.org}</div>
-                <div style={{ fontSize: '12px', color: '#888' }}>{card.date || ''}</div>
-              </Card.Body>
-            </Card>
-          );
-        })}
-      </div>
-
-
-
-      <GraphSection>
-
-        <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '24px', marginBottom: '12px' }}>
-          <PeriodButtons>
-            {['일', '주', '월'].map(period => {
-              if (selectedCard === '소매' && period !== '일') {
+        <GraphSection>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '24px', marginBottom: '12px' }}>
+            <PeriodButtons>
+              {['일', '주', '월'].map(period => {
+                if (selectedCard === '소매' && period !== '일') return null;
                 return (
                   <PeriodButton
                     key={period}
-                    style={{ display: 'none' }}
-                  />
+                    active={selectedPeriod === period}
+                    onClick={() => setSelectedPeriod(period)}
+                  >
+                    {period}
+                  </PeriodButton>
                 );
-              }
+              })}
+            </PeriodButtons>
+          </div>
 
-              return (
-                <PeriodButton
-                  key={period}
-                  active={selectedPeriod === period}
-                  onClick={() => setSelectedPeriod(period)}
-                >
-                  {period}
-                </PeriodButton>
-              );
-            })}
-          </PeriodButtons>
-        </div>
-
-
-        {selectedPeriod === '일' && (
-          <DailyGraph data={getData()} preData={getPreData()} showPrediction={showPrediction} />
-        )}
-        {selectedPeriod === '주' && (
-          <WeeklyGraph data={getData()} preData={getPreData()} showPrediction={showPrediction} />
-        )}
-        {selectedPeriod === '월' && (
-          <MonthlyGraph data={getData()} preData={getPreData()} showPrediction={showPrediction} />
-        )}
-      </GraphSection>
-    </PageWrapper>
+          {selectedPeriod === '일' && <DailyGraph data={getData()} preData={getPreData()} showPrediction={showPrediction} />}
+          {selectedPeriod === '주' && <WeeklyGraph data={getData()} preData={getPreData()} showPrediction={showPrediction} />}
+          {selectedPeriod === '월' && <MonthlyGraph data={getData()} preData={getPreData()} showPrediction={showPrediction} />}
+        </GraphSection>
+      </PageWrapper>
+    </>
   );
 };
 

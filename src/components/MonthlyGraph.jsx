@@ -5,17 +5,22 @@ import {
 } from 'recharts';
 
 const MonthlyGraph = ({ data, preData, showPrediction }) => {
-  const mergedData = data.map((item, index) => {
-    const month = item.month;
-    const avgPrice = item.avgPrice ?? null;
-    const preAvgPrice = preData[index]?.avgPrice ?? null;
+  const mergedData = showPrediction
+    ? preData.map((preItem, index) => {
+      const month = data[index]?.month ?? preItem?.month ?? '';
+      const avgPrice = data[index]?.avgPrice ?? null;
+      const preAvgPrice = preItem?.avgPrice ?? null;
 
-    return {
-      month,
-      avgPrice: avgPrice === undefined ? null : avgPrice,
-      preAvgPrice: preAvgPrice === undefined ? null : preAvgPrice,
-    };
-  });
+      return {
+        month,
+        avgPrice,
+        preAvgPrice,
+      };
+    })
+    : data.map((item) => ({
+      month: item.month,
+      avgPrice: item.avgPrice ?? null,
+    }));
 
   const renderDot = (color) => (props) => {
     const { value, cx, cy } = props;
@@ -23,20 +28,11 @@ const MonthlyGraph = ({ data, preData, showPrediction }) => {
     return <circle cx={cx} cy={cy} r={4} fill={color} />;
   };
 
-  const renderLabel = (props) => {
-    const { x, y, value } = props;
-    if (value == null) return null;
-    return (
-      <text x={x} y={y - 10} fill="black" textAnchor="middle" fontSize={12}>
-        {value}
-      </text>
-    );
-  };
-
   return (
     <div style={{ width: '100%', maxWidth: '1440px', height: 250, margin: '0 auto' }}>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={mergedData} margin={{ top: 30, right: 30, left: 40, bottom: 5 }}>
+        <LineChart data={mergedData}
+          margin={{ top: 30, right: 30, left: 40, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="month" padding={{ left: 30, right: 30 }} />
           <YAxis domain={['auto', 'auto']} />
@@ -49,7 +45,6 @@ const MonthlyGraph = ({ data, preData, showPrediction }) => {
             strokeWidth={2}
             dot={renderDot("#4287f5")}
             activeDot={{ r: 6 }}
-            label={renderLabel}
             name="현재가"
             connectNulls={false}
           />
@@ -61,7 +56,6 @@ const MonthlyGraph = ({ data, preData, showPrediction }) => {
               strokeWidth={2}
               dot={renderDot("orange")}
               activeDot={{ r: 6 }}
-              label={renderLabel}
               name="예측가"
               connectNulls={false}
             />

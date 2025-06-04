@@ -10,7 +10,7 @@ export const PeriodButtons = styled.div`
   display: flex;
   justify-content: flex-end;
   margin: 40px 0 0 0;
-  padding-right: 380px;
+  padding-right: 260px;
   gap: 10px;
   height: 40px;
 `;
