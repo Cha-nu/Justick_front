@@ -27,6 +27,17 @@ import {
   WeatherBottomBox,
 } from './MainPage.styles';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faSun,
+  faCloudSun,
+  faCloud,
+  faCloudShowersHeavy,
+  faCloudRain,
+  faSnowflake,
+  faCloudSunRain,
+} from '@fortawesome/free-solid-svg-icons';
+
 const periodMap = {
   high: '오늘(상)',
   special: '오늘(특)',
@@ -63,7 +74,8 @@ const MainPage = () => {
     humidity: null,
     windSpeed: null,
     weather: '',
-    icon: '/icons/sunny.png',
+    icon: faSun,
+    iconColor: '#f39c12'
   });
 
   useEffect(() => {
@@ -146,31 +158,39 @@ const MainPage = () => {
         const pty = getValue('PTY');
 
         let weatherText = '정보 없음';
-        let icon = '/icons/sunny.png';
+        let icon = faSun;
+        let iconColor = '#f39c12';
 
         if (pty === '0') {
           if (sky === '1') {
             weatherText = '맑음';
-            icon = '/icons/sunny.png';
+            icon = faSun;
+            iconColor = '#f39c12';
           } else if (sky === '3') {
             weatherText = '구름많음';
-            icon = '/icons/cloudy.png';
+            icon = faCloudSun;
+            iconColor = '#a0aec0';
           } else if (sky === '4') {
             weatherText = '흐림';
-            icon = '/icons/gray.png';
+            icon = faCloud;
+            iconColor = '#718096';
           }
         } else if (pty === '1') {
           weatherText = '비';
-          icon = '/icons/rain.png';
+          icon = faCloudShowersHeavy;
+          iconColor = '#3182ce';
         } else if (pty === '2') {
           weatherText = '비/눈';
-          icon = '/icons/snow-rain.png';
+          icon = faCloudRain;
+          iconColor = '#63b3ed';
         } else if (pty === '3') {
           weatherText = '눈';
-          icon = '/icons/snow.png';
+          icon = faSnowflake;
+          iconColor = '#e0f2f1';
         } else if (pty === '4') {
           weatherText = '소나기';
-          icon = '/icons/shower.png';
+          icon = faCloudSunRain;
+          iconColor = '#90cdf4';
         }
 
         setWeather({
@@ -179,6 +199,7 @@ const MainPage = () => {
           windSpeed: wind,
           weather: weatherText,
           icon,
+          iconColor,
         });
       } catch (e) {
         console.error('기상청 API 호출 실패:', e);
@@ -293,9 +314,10 @@ const MainPage = () => {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <WeatherTopBox>
-            <img
-              src={weather.icon}
-              alt={weather.weather}
+            <FontAwesomeIcon
+              icon={weather.icon}
+              size="4x"
+              style={{ color: weather.iconColor }}
               className="weather-icon"
             />
             <div className="weather-text">

@@ -150,13 +150,14 @@ export const WeatherTopBox = styled.div`
   border-radius: 16px;
   min-width: 400px;
   height: 232px;
-  display: flex; /* ✅ 가로 정렬 추가 */
+  display: flex;
   align-items: center; 
-  gap: 20px;
+  gap: 40px;
 
   .weather-icon {
-    width: 80px;
-    height: 80px;
+    width: 110px;
+    height: 110px;
+     margin-left: 30px; 
   }
 
   .weather-text {
