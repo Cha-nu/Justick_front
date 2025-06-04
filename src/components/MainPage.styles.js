@@ -143,20 +143,55 @@ export const CardWrapperBox = styled.div`
 `;
 
 // 날씨 정보 박스
-export const WeatherBox = styled.div`
-  min-width: 400px;
-  min-height: 100%; 
-  background: #f5f5f5/*#f5f5f5*/;
+export const WeatherTopBox = styled.div`
+  background: #f5f5f5;
   border: 1px solid #f5f5f5;
   padding: 16px 20px;
   border-radius: 16px;
-  font-size: 14px;
-  /*box-shadow: 0 2px 8px rgba(0,0,0,0.05);*/
-  line-height: 1.8;
-  color: #333;
+  min-width: 400px;
+  height: 232px;
+  display: flex; /* ✅ 가로 정렬 추가 */
+  align-items: center; 
+  gap: 20px;
 
-  
+  .weather-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .weather-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 16px;
+    color: #333;
+  }
+
+  strong {
+    font-size: 18px;
+  }
 `;
+
+//버튼튼
+export const WeatherBottomBox = styled.div`
+  background: #f5f5f5;
+  border: 1px solid #f5f5f5;
+  padding: 16px 20px;
+  border-radius: 16px;
+  min-width: 400px;
+  height: 232px; /* ✅ 고정 높이 지정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #e4e4e4; /* 조금 더 진한 회색 */
+  }
+`;
+
 
 // 드롭다운 + 제목 + 날짜 묶음 영역
 export const TitleRow = styled.div`

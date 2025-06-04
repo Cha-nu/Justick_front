@@ -18,12 +18,14 @@ const DailyGraph = ({ data, preData, showPrediction }) => {
   });
 
   const renderDot = (color) => (props) => {
-    const { cx, cy } = props;
+    const { value, cx, cy } = props;
+    if (value == null) return null;
     return <circle cx={cx} cy={cy} r={4} fill={color} />;
   };
 
   const renderLabel = (props) => {
     const { x, y, value } = props;
+    if (value == null) return null;
     return (
       <text x={x} y={y - 10} fill="black" textAnchor="middle" fontSize={12}>
         {value}
@@ -32,7 +34,7 @@ const DailyGraph = ({ data, preData, showPrediction }) => {
   };
 
   return (
-    <div style={{ width: '85vw', height: 250, margin: '0 auto' }}>
+    <div style={{ width: '100%', maxWidth: '1440px', height: 250, margin: '0 auto' }}>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={mergedData} margin={{ top: 30, right: 30, left: 40, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />

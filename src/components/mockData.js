@@ -29,7 +29,7 @@ const mockData = [
   // 고추 - high
   {
     id: 3,
-    name: '고추',
+    name: '감자',
     unit: 'kg',
     yesterdayPrice: '5,2001원',
     yesterdayIntake: '700kg',
@@ -42,7 +42,7 @@ const mockData = [
   // 고추 - special
   {
     id: 4,
-    name: '고추',
+    name: '감자',
     unit: 'kg',
     yesterdayPrice: '6,101원',
     yesterdayIntake: '680kg',

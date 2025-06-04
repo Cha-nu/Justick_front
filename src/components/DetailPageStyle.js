@@ -28,4 +28,6 @@ export const PeriodButton = styled.button`
 // 그래프가 나오는 영역
 export const GraphSection = styled.div`
   padding: 20px 0;
+  
+  
 `;
