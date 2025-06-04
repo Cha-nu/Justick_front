@@ -138,7 +138,7 @@ const MainPage = () => {
       const serviceKey = 'RwFnFISqtNf2iWlKxlmJYAwzjiJHK%2BFr803L748fZ2Oo6LJi0wx82l32XSgHEpyvusJu0T8jRSnXD2WOsZTBdg%3D%3D';
       const now = new Date();
       const baseDate = now.toISOString().slice(0, 10).replace(/-/g, '');
-      const baseTime = '0500';
+      const baseTime = '1400';
       const nx = 62;
       const ny = 126;
 
@@ -206,8 +206,13 @@ const MainPage = () => {
       }
     };
 
-    fetchWeather();
+    fetchWeather(); // 최초 실행
+
+    const intervalId = setInterval(fetchWeather, 2 * 60 * 60 * 1000); // 2시간마다 반복 실행
+
+    return () => clearInterval(intervalId); // 언마운트 시 interval 정리
   }, []);
+
 
   const handleSearchKeyDown = (e) => {
     if (e.key === 'Enter' && searchTerm.trim()) {
