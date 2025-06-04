@@ -33,7 +33,9 @@ const WeeklyGraph = ({ data, preData, showPrediction }) => {
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={mergedData} margin={{ top: 30, right: 30, left: 40, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="week" padding={{ left: 30, right: 30 }} />
+          <XAxis dataKey="week"
+            padding={{ left: 30, right: 30 }}
+            interval={1} />
           <YAxis domain={['auto', 'auto']} />
           <Tooltip />
           <Legend />
