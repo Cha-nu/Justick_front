@@ -7,8 +7,8 @@ import { PageWrapper, PeriodButtons, PeriodButton, GraphSection } from './Detail
 import { Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// const SERVER_URL = 'http://justick.myvnc.com:443/justick_spring';
-const SERVER_URL = '/justick_spring';
+// const SERVER_URL = 'http://justick.myvnc.com:2025/justick_spring';
+const SERVER_URL = 'http://justick.myvnc.com:2025/justick_spring';
 
 const initialCardInfo = [
   {

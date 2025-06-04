@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PriceCard from './PriceCard';
+import NavigationBar from "./NavigationBar";
 import { FaSearch } from 'react-icons/fa';
 import {
   MainPageWrapper,
@@ -60,7 +61,7 @@ const additionalProduceList = [
 ];
 
 const GRADES = ['high', 'special'];
-const BASE_URL = 'http://justick.myvnc.com:443/justick_spring';
+const BASE_URL = 'http://justick.myvnc.com:2025/justick_spring';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -208,18 +209,25 @@ const MainPage = () => {
 
     fetchWeather(); // 최초 실행
 
-    const intervalId = setInterval(fetchWeather, 2 * 60 * 60 * 1000); // 2시간마다 반복 실행
+    const intervalId = setInterval(fetchWeather, 2 * 15 * 60 * 1000);
 
-    return () => clearInterval(intervalId); // 언마운트 시 interval 정리
+    return () => clearInterval(intervalId);
   }, []);
 
 
   const handleSearchKeyDown = (e) => {
     if (e.key === 'Enter' && searchTerm.trim()) {
-      const term = searchTerm.trim().toLowerCase();
-      const isSpecial = term.endsWith('특');
-      const cleanName = isSpecial ? term.replace(/특$/, '') : term;
-      const gradeToSearch = isSpecial ? 'special' : 'high';
+      const term = searchTerm.trim().toLowerCase().replace(/\s+/g, ''); // 공백 제거
+      let gradeToSearch = 'high';
+      let cleanName = term;
+
+      if (term.endsWith('특')) {
+        gradeToSearch = 'special';
+        cleanName = term.slice(0, -1);
+      } else if (term.endsWith('상')) {
+        gradeToSearch = 'high';
+        cleanName = term.slice(0, -1);
+      }
 
       const foundItem = data.find(
         (item) =>
@@ -235,6 +243,7 @@ const MainPage = () => {
     }
   };
 
+
   const handleButtonClick = (produceName) => {
     const foundItem = data.find(
       (item) => item.name === produceName && item.grade === period
@@ -247,112 +256,116 @@ const MainPage = () => {
   };
 
   return (
-    <MainPageWrapper>
-      <IntroSection>
-        <IntroTitle2>가락시장 도매가</IntroTitle2>
-        <IntroTitle1>
-          농산물 예측서비스 <span style={{ color: '#2DB400' }}>&quot;딱대&quot;</span>
-        </IntroTitle1>
-        <IntroSearchBar
-          placeholder="품목을 입력하세요."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={handleSearchKeyDown}
-        />
+    <>
+      <NavigationBar data={data} />
 
-        <CategoryWrapper>
-          {apiProduceList.map((produce) => (
-            <CategoryCircle key={produce.name} onClick={() => handleButtonClick(produce.name)}>
-              <img
-                src={produce.icon}
-                alt={produce.name}
-                style={{ width: '100px', height: '100px', marginBottom: '8px' }}
-              />
-              <CategoryText>{produce.name}</CategoryText>
-            </CategoryCircle>
-          ))}
-        </CategoryWrapper>
-      </IntroSection>
-
-      <CardSectionWithWeather>
-        <CardWrapperBox>
-          <TitleRow>
-            <PeriodDropdown onClick={() => setIsOpen(!isOpen)}>
-              <span>
-                오늘 <GradeSmall>{period === 'high' ? '(상)' : '(특)'}</GradeSmall>
-              </span>
-              <Arrow>▼</Arrow>
-              {isOpen && (
-                <PeriodOptions>
-                  {GRADES.map((key) => (
-                    <PeriodOption
-                      key={key}
-                      className={period === key ? 'active' : ''}
-                      onClick={() => {
-                        setPeriod(key);
-                        setIsOpen(false);
-                      }}
-                    >
-                      {periodMap[key]}
-                    </PeriodOption>
-                  ))}
-                </PeriodOptions>
-              )}
-            </PeriodDropdown>
-            <Title>가락시장 도매가격</Title>
-            {date && <PriceDate>기준일({date})</PriceDate>}
-          </TitleRow>
-
-          <ScrollContainer>
-            <CardGrid>
-              {[...data.filter((item) => item.grade === period),
-              ...additionalProduceList.map((item) => ({ name: item.name, isExtra: true }))].map(
-                (item, index) => (
-                  <PriceCard
-                    key={`${item.name}-${index}`}
-                    item={item}
-                    onClick={() => {
-                      if (item.isExtra) {
-                        alert('서비스 준비중입니다.');
-                      } else {
-                        navigate(`/detail/${item.key}/${item.grade}`);
-                      }
-                    }}
-                  />
-                )
-              )}
-            </CardGrid>
-          </ScrollContainer>
-        </CardWrapperBox>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <WeatherTopBox>
-            <FontAwesomeIcon
-              icon={weather.icon}
-              size="4x"
-              style={{ color: weather.iconColor }}
-              className="weather-icon"
-            />
-            <div className="weather-text">
-              <strong>날씨 정보</strong>
-              <div>서울: {weather.temperature}℃, {weather.weather}</div>
-              <div>습도: {weather.humidity}%</div>
-              <div>풍속: {weather.windSpeed}m/s</div>
-            </div>
-          </WeatherTopBox>
-          <WeatherBottomBox
-            role="button"
-            tabIndex={0}
-            onClick={() => window.open('https://www.garak.co.kr/homepage/landing.do', '_blank')}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                window.open('https://www.garak.co.kr/homepage/landing.do', '_blank');
-              }
-            }}
+      <MainPageWrapper>
+        <IntroSection>
+          <IntroTitle2>가락시장 도매가</IntroTitle2>
+          <IntroTitle1>
+            농산물 예측서비스 <span style={{ color: '#2DB400' }}>&quot;딱대&quot;</span>
+          </IntroTitle1>
+          <IntroSearchBar
+            placeholder="품목을 입력하세요."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleSearchKeyDown}
           />
-        </div>
-      </CardSectionWithWeather>
-    </MainPageWrapper>
+
+          <CategoryWrapper>
+            {apiProduceList.map((produce) => (
+              <CategoryCircle key={produce.name} onClick={() => handleButtonClick(produce.name)}>
+                <img
+                  src={produce.icon}
+                  alt={produce.name}
+                  style={{ width: '100px', height: '100px', marginBottom: '8px' }}
+                />
+                <CategoryText>{produce.name}</CategoryText>
+              </CategoryCircle>
+            ))}
+          </CategoryWrapper>
+        </IntroSection>
+
+        <CardSectionWithWeather>
+          <CardWrapperBox>
+            <TitleRow>
+              <PeriodDropdown onClick={() => setIsOpen(!isOpen)}>
+                <span>
+                  오늘 <GradeSmall>{period === 'high' ? '(상)' : '(특)'}</GradeSmall>
+                </span>
+                <Arrow>▼</Arrow>
+                {isOpen && (
+                  <PeriodOptions>
+                    {GRADES.map((key) => (
+                      <PeriodOption
+                        key={key}
+                        className={period === key ? 'active' : ''}
+                        onClick={() => {
+                          setPeriod(key);
+                          setIsOpen(false);
+                        }}
+                      >
+                        {periodMap[key]}
+                      </PeriodOption>
+                    ))}
+                  </PeriodOptions>
+                )}
+              </PeriodDropdown>
+              <Title>가락시장 도매가격</Title>
+              {date && <PriceDate>기준일({date})</PriceDate>}
+            </TitleRow>
+
+            <ScrollContainer>
+              <CardGrid>
+                {[...data.filter((item) => item.grade === period),
+                ...additionalProduceList.map((item) => ({ name: item.name, isExtra: true }))].map(
+                  (item, index) => (
+                    <PriceCard
+                      key={`${item.name}-${index}`}
+                      item={item}
+                      onClick={() => {
+                        if (item.isExtra) {
+                          alert('서비스 준비중입니다.');
+                        } else {
+                          navigate(`/detail/${item.key}/${item.grade}`);
+                        }
+                      }}
+                    />
+                  )
+                )}
+              </CardGrid>
+            </ScrollContainer>
+          </CardWrapperBox>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <WeatherTopBox>
+              <FontAwesomeIcon
+                icon={weather.icon}
+                size="4x"
+                style={{ color: weather.iconColor }}
+                className="weather-icon"
+              />
+              <div className="weather-text">
+                <strong>날씨 정보</strong>
+                <div>서울: {weather.temperature}℃, {weather.weather}</div>
+                <div>습도: {weather.humidity}%</div>
+                <div>풍속: {weather.windSpeed}m/s</div>
+              </div>
+            </WeatherTopBox>
+            <WeatherBottomBox
+              role="button"
+              tabIndex={0}
+              onClick={() => window.open('https://www.garak.co.kr/homepage/landing.do', '_blank')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  window.open('https://www.garak.co.kr/homepage/landing.do', '_blank');
+                }
+              }}
+            />
+          </div>
+        </CardSectionWithWeather>
+      </MainPageWrapper>
+    </>
   );
 };
 
