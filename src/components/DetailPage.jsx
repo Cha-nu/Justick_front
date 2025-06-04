@@ -210,7 +210,11 @@ const DetailPage = () => {
           return (
             <Card
               key={card.key}
-              onClick={() => setSelectedCard(card.key)}
+              onClick={() => {
+                setSelectedCard(card.key);
+                setSelectedPeriod('일');
+              }}
+
               onMouseEnter={() => setHoveredCard(card.key)}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
@@ -242,19 +246,36 @@ const DetailPage = () => {
         })}
       </div>
 
-      <PeriodButtons>
-        {['일', '주', '월'].map(period => (
-          <PeriodButton
-            key={period}
-            active={selectedPeriod === period}
-            onClick={() => setSelectedPeriod(period)}
-          >
-            {period}
-          </PeriodButton>
-        ))}
-      </PeriodButtons>
+
 
       <GraphSection>
+
+        <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '24px', marginBottom: '12px' }}>
+          <PeriodButtons>
+            {['일', '주', '월'].map(period => {
+              if (selectedCard === '소매' && period !== '일') {
+                return (
+                  <PeriodButton
+                    key={period}
+                    style={{ display: 'none' }}
+                  />
+                );
+              }
+
+              return (
+                <PeriodButton
+                  key={period}
+                  active={selectedPeriod === period}
+                  onClick={() => setSelectedPeriod(period)}
+                >
+                  {period}
+                </PeriodButton>
+              );
+            })}
+          </PeriodButtons>
+        </div>
+
+
         {selectedPeriod === '일' && (
           <DailyGraph data={getData()} preData={getPreData()} showPrediction={showPrediction} />
         )}

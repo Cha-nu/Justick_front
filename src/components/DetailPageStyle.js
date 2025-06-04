@@ -8,8 +8,11 @@ export const PageWrapper = styled.div`
 // '일 / 월 / 연' 버튼들을 감싸는 컨테이너
 export const PeriodButtons = styled.div`
   display: flex;
-  margin: 40px auto 0 1550px; // 위 40px, 왼쪽 60px, 가운데 정렬 안 됨
+  justify-content: flex-end;
+  margin: 40px 0 0 0;
+  padding-right: 380px;
   gap: 10px;
+  height: 40px;
 `;
 
 
