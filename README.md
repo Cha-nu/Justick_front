@@ -1,5 +1,18 @@
 # Justick Backend
 https://github.com/Cha-nu/Justick
+# Justick AI
+[https://github.com/Cha-nu/Justick](https://github.com/wjyi0615/Justick_AI)
+# Justick System
+[[https://github.com/Cha-nu/Justick](https://github.com/wjyi0615/Justick_AI)](https://github.com/Cha-nu/Justick_system)
+
+최초
+npm install
+
+실행
+npm run dev
+
+빌드
+npm run build
 
 # React + Vite
 
