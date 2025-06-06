@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './NavigationBar.css';
 
-const NavigationBar = ({ data }) => {
+const NavigationBar = ({ data, hideSearch = false }) => {
   const [navbarShrink, setNavbarShrink] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
@@ -59,28 +59,32 @@ const NavigationBar = ({ data }) => {
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
           </Nav>
-          <Form
-            className="d-flex"
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSearch();
-            }}
-          >
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2 custom-success"
-              aria-label="Search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleSearch();
+
+          {/* ✅ 조건부 렌더링으로 검색창 숨김 처리 */}
+          {!hideSearch && (
+            <Form
+              className="d-flex"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSearch();
               }}
-            />
-            <Button className="custom-button" variant="outline-success" onClick={handleSearch}>
-              Search
-            </Button>
-          </Form>
+            >
+              <Form.Control
+                type="search"
+                placeholder="Search"
+                className="me-2 custom-success"
+                aria-label="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSearch();
+                }}
+              />
+              <Button className="custom-button" variant="outline-success" onClick={handleSearch}>
+                Search
+              </Button>
+            </Form>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

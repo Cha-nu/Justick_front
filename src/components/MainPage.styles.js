@@ -177,21 +177,39 @@ export const WeatherTopBox = styled.div`
 export const WeatherBottomBox = styled.div`
   background: #f5f5f5;
   border: 1px solid #f5f5f5;
-  padding: 16px 20px;
+  padding: 20px 24px;
   border-radius: 16px;
   min-width: 400px;
-  height: 232px; /* ✅ 고정 높이 지정 */
+  height: 232px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   cursor: pointer;
-
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: #e4e4e4; /* 조금 더 진한 회색 */
+    background-color: #e4e4e4;
   }
+
+  .bottom-text-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .bottom-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #111;
+  }
+
+  .bottom-subtitle {
+    font-size: 16px;
+    color: #555;
+  }
+
 `;
+
 
 
 // 드롭다운 + 제목 + 날짜 묶음 영역

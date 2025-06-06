@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import DailyGraph from './DailyGraph';
 import WeeklyGraph from './WeeklyGraph';
 import MonthlyGraph from './MonthlyGraph';
-import { PageWrapper, PeriodButtons, PeriodButton, GraphSection } from './DetailPageStyle';
+import { PageWrapper, PeriodButtons, PeriodButton, GraphSection, HeaderTitle } from './DetailPageStyle';
 import { Card } from 'react-bootstrap';
 import NavigationBar from './NavigationBar'; // ⬅️ 추가
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -39,6 +39,9 @@ const formatWeekLabel = (weekKey) => {
 
 const DetailPage = () => {
   const { key, grade } = useParams();
+  const matchedProduce = apiProduceList.find(item => item.key === key);
+  const displayName = matchedProduce ? matchedProduce.name : '';
+  const displayGrade = grade === 'special' ? '특' : grade === 'high' ? '상' : '';
   const [selectedPeriod, setSelectedPeriod] = useState('일');
   const [selectedCard, setSelectedCard] = useState('가락시장');
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -204,6 +207,10 @@ const DetailPage = () => {
     <>
       <NavigationBar data={searchData} />
       <PageWrapper>
+        <HeaderTitle>
+          <span className="highlight">{displayName}({displayGrade}) 거래 가격</span>{' '}
+          <span className="normal">바로 보기</span>
+        </HeaderTitle>
         <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px', maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
           {cardInfo.map(card => {
             const isSelected = selectedCard === card.key;

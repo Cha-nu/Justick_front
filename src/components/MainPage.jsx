@@ -61,8 +61,8 @@ const additionalProduceList = [
 ];
 
 const GRADES = ['high', 'special'];
-const BASE_URL = 'http://justick.myvnc.com:2025/justick_spring';
-// const BASE_URL = '/justick_spring';
+//const BASE_URL = 'http://justick.myvnc.com:2025/justick_spring';
+const BASE_URL = '/justick_spring';
 const MainPage = () => {
   const navigate = useNavigate();
   const [period, setPeriod] = useState('high');
@@ -139,7 +139,7 @@ const MainPage = () => {
       const serviceKey = 'RwFnFISqtNf2iWlKxlmJYAwzjiJHK%2BFr803L748fZ2Oo6LJi0wx82l32XSgHEpyvusJu0T8jRSnXD2WOsZTBdg%3D%3D';
       const now = new Date();
       const baseDate = now.toISOString().slice(0, 10).replace(/-/g, '');
-      const baseTime = '1400';
+      const baseTime = '1100';
       const nx = 62;
       const ny = 126;
 
@@ -257,7 +257,8 @@ const MainPage = () => {
 
   return (
     <>
-      <NavigationBar data={data} />
+      <NavigationBar data={data} hideSearch={true} />
+
 
       <MainPageWrapper>
         <IntroSection>
@@ -355,13 +356,22 @@ const MainPage = () => {
             <WeatherBottomBox
               role="button"
               tabIndex={0}
-              onClick={() => window.open('https://www.garak.co.kr/homepage/landing.do', '_blank')}
+              onClick={() =>
+                window.open('https://temp.garak.co.kr/price/OZViewer.do?R010680=10&R010690=10&R010700=10', '_blank')
+              }
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  window.open('https://www.garak.co.kr/homepage/landing.do', '_blank');
+                  window.open('https://temp.garak.co.kr/price/OZViewer.do?R010680=10&R010690=10&R010700=10', '_blank');
                 }
               }}
-            />
+            >
+              <div className="bottom-text-box">
+                <div className="bottom-subtitle">오늘의 실시간 경매 결과를<br /> 바로 확인해보세요</div>
+                <div className="bottom-title">실시간 경매 결과</div>
+              </div>
+              <img src="/icons/경매.png" alt="경매 아이콘" style={{ width: '160px', height: '160px' }} />
+            </WeatherBottomBox>
+
           </div>
         </CardSectionWithWeather>
       </MainPageWrapper>
