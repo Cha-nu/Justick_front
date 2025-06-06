@@ -8,8 +8,8 @@ import { Card } from 'react-bootstrap';
 import NavigationBar from './NavigationBar'; // ⬅️ 추가
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const SERVER_URL = 'http://justick.myvnc.com:2025/justick_spring';
-// const SERVER_URL = '/justick_spring';
+//const SERVER_URL = 'http://justick.myvnc.com:2025/justick_spring';
+const SERVER_URL = '/justick_spring';
 
 const apiProduceList = [
   { name: '고구마', key: 'sweetPotato' },
