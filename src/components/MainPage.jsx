@@ -61,8 +61,8 @@ const additionalProduceList = [
 ];
 
 const GRADES = ['high', 'special'];
-const BASE_URL = 'http://justick.myvnc.com:2025/justick_spring';
-// const BASE_URL = '/justick_spring';
+// const BASE_URL = 'http://justick.myvnc.com:2025/justick_spring';
+const BASE_URL = '/justick_spring';
 const MainPage = () => {
   const navigate = useNavigate();
   const [period, setPeriod] = useState('high');
