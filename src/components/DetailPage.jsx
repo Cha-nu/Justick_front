@@ -8,11 +8,7 @@ import { Card } from 'react-bootstrap';
 import NavigationBar from './NavigationBar'; // ⬅️ 추가
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-<<<<<<< HEAD
-// const SERVER_URL = 'http://justick.myvnc.com:2025/justick_spring';
-=======
 //const SERVER_URL = 'http://justick.myvnc.com:2025/justick_spring';
->>>>>>> 5691c00b782928fda82d0f8cdf6277ca36ad7e84
 const SERVER_URL = '/justick_spring';
 
 const apiProduceList = [
