@@ -28,6 +28,26 @@ export const PeriodButton = styled.button`
   transition: 0.3s;
 `;
 
+export const HeaderTitle = styled.h2`
+  text-align: left; // ← 'left', 'center', 'right' 로 조절 가능
+  margin: -19px 40px 50px 600px; // ← 왼쪽 여백 직접 조절
+  font-size: 24px;
+
+  span.highlight {
+    color:rgb(5, 72, 173);
+    font-weight: bold;
+  }
+
+  span.normal {
+    color: #333;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    margin-left: 20px;
+  }
+`;
+
 // 그래프가 나오는 영역
 export const GraphSection = styled.div`
   padding: 20px 0;
