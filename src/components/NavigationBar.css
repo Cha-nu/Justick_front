@@ -1,31 +1,35 @@
 /* src/components/NavigationBar.css */
 .navbar-large {
-    transition: all 0.3s ease;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: 1rem;
-    box-shadow: none;
-  }
-  
-  .navbar-shrink {
-    transition: all 0.3s ease;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    font-size: 1.2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  .navbar-brand-custom {
-    transition: all 0.3s ease;
-    font-weight: bold;
-  }
+  transition: all 0.3s ease;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 1rem;
+  box-shadow: none;
+  background-color: white !important;
+  /* ✅ Bootstrap override */
+}
 
-  .custom-button {
-    color: #2DB400;
-    border-color: #2DB400;
-  }
-  .custom-success:focus {
-    border-color: #28a745; /* Bootstrap success 색상 */
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-  }
+.navbar-shrink {
+  transition: all 0.3s ease;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand-custom {
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.custom-button {
+  color: #2DB400;
+  border-color: #2DB400;
+}
+
+.custom-success:focus {
+  border-color: #28a745;
+  /* Bootstrap success 색상 */
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}

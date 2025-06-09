@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import PriceCard from './PriceCard';
 import NavigationBar from "./NavigationBar";
 import { FaSearch } from 'react-icons/fa';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import {
   MainPageWrapper,
   IntroSection,
@@ -39,6 +41,16 @@ import {
   faCloudSunRain,
 } from '@fortawesome/free-solid-svg-icons';
 
+const unitMap = {
+  고구마: '10kg',
+  양파: '1kg',
+  배추: '10kg',
+  감자: '20kg',
+  무: '20kg',
+  토마토: '10kg'
+  // 필요시 계속 추가
+};
+
 const periodMap = {
   high: '오늘(상)',
   special: '오늘(특)',
@@ -70,6 +82,12 @@ const MainPage = () => {
   const [data, setData] = useState([]);
   const [date, setDate] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const cardSectionRef = useRef(null);
+  const isInView = useInView(cardSectionRef, {
+    threshold: 0.2,
+    triggerOnce: false,
+    rootMargin: '0px 0px 0px 0px',
+  });
   const [weather, setWeather] = useState({
     temperature: null,
     humidity: null,
@@ -286,95 +304,104 @@ const MainPage = () => {
             ))}
           </CategoryWrapper>
         </IntroSection>
+        <motion.div
+          ref={cardSectionRef}
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.5 }}
+        >
+          <CardSectionWithWeather>
+            <CardWrapperBox>
+              <TitleRow>
+                <PeriodDropdown onClick={() => setIsOpen(!isOpen)}>
+                  <span>
+                    오늘 <GradeSmall>{period === 'high' ? '(상)' : '(특)'}</GradeSmall>
+                  </span>
+                  <Arrow>▼</Arrow>
+                  {isOpen && (
+                    <PeriodOptions>
+                      {GRADES.map((key) => (
+                        <PeriodOption
+                          key={key}
+                          className={period === key ? 'active' : ''}
+                          onClick={() => {
+                            setPeriod(key);
+                            setIsOpen(false);
+                          }}
+                        >
+                          {periodMap[key]}
+                        </PeriodOption>
+                      ))}
+                    </PeriodOptions>
+                  )}
+                </PeriodDropdown>
+                <Title>가락시장 도매가격</Title>
+                {date && <PriceDate>기준일({date})</PriceDate>}
+              </TitleRow>
 
-        <CardSectionWithWeather>
-          <CardWrapperBox>
-            <TitleRow>
-              <PeriodDropdown onClick={() => setIsOpen(!isOpen)}>
-                <span>
-                  오늘 <GradeSmall>{period === 'high' ? '(상)' : '(특)'}</GradeSmall>
-                </span>
-                <Arrow>▼</Arrow>
-                {isOpen && (
-                  <PeriodOptions>
-                    {GRADES.map((key) => (
-                      <PeriodOption
-                        key={key}
-                        className={period === key ? 'active' : ''}
+              <ScrollContainer>
+                <CardGrid>
+                  {[...data.filter((item) => item.grade === period),
+                  ...additionalProduceList.map((item) => ({ name: item.name, isExtra: true }))].map(
+                    (item, index) => (
+                      <PriceCard
+                        key={`${item.name}-${index}`}
+                        item={item}
+                        unit={unitMap[item.name] || 'kg'}  // 기본값은 'kg'
                         onClick={() => {
-                          setPeriod(key);
-                          setIsOpen(false);
+                          if (item.isExtra) {
+                            alert('서비스 준비중입니다.');
+                          } else {
+                            navigate(`/detail/${item.key}/${item.grade}`);
+                          }
                         }}
-                      >
-                        {periodMap[key]}
-                      </PeriodOption>
-                    ))}
-                  </PeriodOptions>
-                )}
-              </PeriodDropdown>
-              <Title>가락시장 도매가격</Title>
-              {date && <PriceDate>기준일({date})</PriceDate>}
-            </TitleRow>
+                      />
 
-            <ScrollContainer>
-              <CardGrid>
-                {[...data.filter((item) => item.grade === period),
-                ...additionalProduceList.map((item) => ({ name: item.name, isExtra: true }))].map(
-                  (item, index) => (
-                    <PriceCard
-                      key={`${item.name}-${index}`}
-                      item={item}
-                      onClick={() => {
-                        if (item.isExtra) {
-                          alert('서비스 준비중입니다.');
-                        } else {
-                          navigate(`/detail/${item.key}/${item.grade}`);
-                        }
-                      }}
-                    />
-                  )
-                )}
-              </CardGrid>
-            </ScrollContainer>
-          </CardWrapperBox>
+                    )
+                  )}
+                </CardGrid>
+              </ScrollContainer>
+            </CardWrapperBox>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <WeatherTopBox>
-              <FontAwesomeIcon
-                icon={weather.icon}
-                size="4x"
-                style={{ color: weather.iconColor }}
-                className="weather-icon"
-              />
-              <div className="weather-text">
-                <strong>날씨 정보</strong>
-                <div>서울: {weather.temperature}℃, {weather.weather}</div>
-                <div>습도: {weather.humidity}%</div>
-                <div>풍속: {weather.windSpeed}m/s</div>
-              </div>
-            </WeatherTopBox>
-            <WeatherBottomBox
-              role="button"
-              tabIndex={0}
-              onClick={() =>
-                window.open('https://temp.garak.co.kr/price/OZViewer.do?R010680=10&R010690=10&R010700=10', '_blank')
-              }
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  window.open('https://temp.garak.co.kr/price/OZViewer.do?R010680=10&R010690=10&R010700=10', '_blank');
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <WeatherTopBox>
+                <FontAwesomeIcon
+                  icon={weather.icon}
+                  size="4x"
+                  style={{ color: weather.iconColor }}
+                  className="weather-icon"
+                />
+                <div className="weather-text">
+                  <strong>날씨 정보</strong>
+                  <div>서울: {weather.temperature}℃, {weather.weather}</div>
+                  <div>습도: {weather.humidity}%</div>
+                  <div>풍속: {weather.windSpeed}m/s</div>
+                </div>
+              </WeatherTopBox>
+              <WeatherBottomBox
+                role="button"
+                tabIndex={0}
+                onClick={() =>
+                  window.open('https://temp.garak.co.kr/price/OZViewer.do?R010680=10&R010690=10&R010700=10', '_blank')
                 }
-              }}
-            >
-              <div className="bottom-text-box">
-                <div className="bottom-subtitle">오늘의 실시간 경매 결과를<br /> 바로 확인해보세요</div>
-                <div className="bottom-title">실시간 경매 결과</div>
-              </div>
-              <img src="/icons/경매.png" alt="경매 아이콘" style={{ width: '160px', height: '160px' }} />
-            </WeatherBottomBox>
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    window.open('https://temp.garak.co.kr/price/OZViewer.do?R010680=10&R010690=10&R010700=10', '_blank');
+                  }
+                }}
+              >
+                <div className="bottom-text-box">
+                  <div className="bottom-title">실시간 경매 결과</div>
+                  <div className="bottom-subtitle">오늘의 실시간 경매 결과를<br /> 바로 확인해보세요</div>
 
-          </div>
-        </CardSectionWithWeather>
-      </MainPageWrapper>
+                </div>
+                <img src="/icons/경매.png" alt="경매 아이콘" style={{ width: '160px', height: '160px' }} />
+              </WeatherBottomBox>
+
+            </div>
+          </CardSectionWithWeather>
+        </motion.div>
+      </MainPageWrapper >
     </>
   );
 };

@@ -11,7 +11,7 @@ import {
   DiffRate
 } from './PriceCard.styles';
 
-const PriceCard = ({ item, onClick }) => {
+const PriceCard = ({ item, unit, onClick }) => {
   const isUp = item.gap > 0;
   const isDown = item.gap < 0;
   const arrow = isUp ? '▲' : isDown ? '▼' : '-';
@@ -21,7 +21,7 @@ const PriceCard = ({ item, onClick }) => {
     <CardWrapper onClick={onClick}>
       <ItemInfo>
         <ItemName>{item.name}</ItemName>
-        <ItemUnit>kg</ItemUnit>
+        <ItemUnit>{unit}</ItemUnit>  {/* ✅ 여기 */}
         <ItemPrice>{item.averagePrice?.toLocaleString()}원</ItemPrice>
       </ItemInfo>
       <PriceDiffBox>
@@ -36,5 +36,6 @@ const PriceCard = ({ item, onClick }) => {
     </CardWrapper>
   );
 };
+
 
 export default PriceCard;

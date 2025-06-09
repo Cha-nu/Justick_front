@@ -52,7 +52,7 @@ const WeeklyGraph = ({ data, preData, showPrediction }) => {
           {showPrediction && (
             <Line
               type="monotone"
-              dataKey="preSales"
+              dataKey="prePrice"
               stroke="orange"
               strokeWidth={2}
               dot={renderDot("orange")}
@@ -61,6 +61,17 @@ const WeeklyGraph = ({ data, preData, showPrediction }) => {
               connectNulls={false}
             />
           )}
+          <Line
+            type="monotone"
+            dataKey="price"
+            stroke="#4287f5"
+            strokeWidth={2}
+            dot={renderDot("#4287f5")}
+            activeDot={{ r: 6 }}
+            name="현재가"
+            connectNulls={false}
+          />
+
         </LineChart>
       </ResponsiveContainer>
     </div>

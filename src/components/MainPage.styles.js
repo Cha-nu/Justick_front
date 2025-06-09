@@ -163,13 +163,15 @@ export const WeatherTopBox = styled.div`
   .weather-text {
     display: flex;
     flex-direction: column;
+    line-height: 1;
     gap: 8px;
     font-size: 16px;
     color: #333;
   }
 
   strong {
-    font-size: 18px;
+    font-size: 20px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -192,13 +194,14 @@ export const WeatherBottomBox = styled.div`
   }
 
   .bottom-text-box {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 22px; /* ✅ 원하는 만큼 조절 */
+}
 
   .bottom-title {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
     color: #111;
   }

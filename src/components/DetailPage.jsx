@@ -5,11 +5,21 @@ import WeeklyGraph from './WeeklyGraph';
 import MonthlyGraph from './MonthlyGraph';
 import { PageWrapper, PeriodButtons, PeriodButton, GraphSection, HeaderTitle } from './DetailPageStyle';
 import { Card } from 'react-bootstrap';
-import NavigationBar from './NavigationBar'; // ⬅️ 추가
+import NavigationBar from './NavigationBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-//const SERVER_URL = 'http://justick.myvnc.com:2025/justick_spring';
-const SERVER_URL = '/justick_spring';
+const SERVER_URL = 'http://justick.myvnc.com:2025/justick_spring';
+//const SERVER_URL = '/justick_spring';
+
+const unitMap = {
+  고구마: '10kg',
+  양파: '1kg',
+  배추: '10kg',
+  감자: '20kg',
+  무: '20kg',
+  토마토: '10kg'
+};
+
 
 const apiProduceList = [
   { name: '고구마', key: 'sweetPotato' },
@@ -130,10 +140,13 @@ const DetailPage = () => {
         const intakeDiff = latest.intake - (prev?.intake || 0);
         const intakePercent = prev?.intake ? (intakeDiff / prev.intake) * 100 : 0;
 
+        const unit = unitMap[displayName] || 'kg'; // 품목 단위 불러오기
+
         const newCardInfo = initialCardInfo.map(card => {
           if (card.key === '가락시장') {
             return {
               ...card,
+              unit: `(${unit} 상품 기준)`,  // 👈 단위 통일 적용
               price: `${latest.averagePrice.toLocaleString()}원`,
               diff: `${priceDiff > 0 ? '+' : ''}${priceDiff.toLocaleString()} (${pricePercent.toFixed(1)}%)`,
               diffColor: priceDiff > 0 ? 'red' : 'blue',
@@ -143,6 +156,7 @@ const DetailPage = () => {
           if (card.key === '반입량') {
             return {
               ...card,
+              unit: `(${unit} 상품 기준)`,  // 👈 단위 통일 적용
               price: `${latest.intake.toLocaleString()}톤`,
               diff: `${intakeDiff > 0 ? '+' : ''}${intakeDiff.toLocaleString()} (${intakePercent.toFixed(1)}%)`,
               diffColor: intakeDiff > 0 ? 'red' : 'blue',
@@ -152,6 +166,7 @@ const DetailPage = () => {
           if (card.key === '소매') {
             return {
               ...card,
+              unit: `(${unit} 상품 기준)`,  // 👈 단위 통일 적용
               price: `${retailLatest?.averagePrice?.toLocaleString() ?? '-'}원`,
               diff: `${retailDiff > 0 ? '+' : ''}${retailDiff.toLocaleString()} (${retailPercent.toFixed(1)}%)`,
               diffColor: retailDiff > 0 ? 'red' : 'blue',
@@ -160,6 +175,7 @@ const DetailPage = () => {
           }
           return card;
         });
+
 
         setCardInfo(newCardInfo);
         setDailyPriceData(priceData.map(val => ({ date: `${val.month}월 ${val.day}일`, price: val.averagePrice, gap: val.gap })));

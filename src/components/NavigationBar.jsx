@@ -1,9 +1,10 @@
-// src/components/NavigationBar.jsx
 import React, { useState, useEffect } from 'react';
 import { Navbar, Container, Nav, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './NavigationBar.css';
+
+
 
 const NavigationBar = ({ data, hideSearch = false }) => {
   const [navbarShrink, setNavbarShrink] = useState(false);
@@ -50,17 +51,30 @@ const NavigationBar = ({ data, hideSearch = false }) => {
     <Navbar
       fixed="top"
       expand="lg"
-      className={`bg-body-tertiary ${navbarShrink ? 'navbar-shrink' : 'navbar-large'}`}
+      className="bg-body-tertiary navbar-large"  // ✅ 항상 고정 클래스만 적용
     >
+
       <Container fluid>
-        <Navbar.Brand href="/" className="navbar-brand-custom">TTack Dae</Navbar.Brand>
+        {/* ✅ 로고 이미지로 변경 */}
+        <Navbar.Brand href="/" className="navbar-brand-custom">
+          <img
+            src="/icons/logo.png"
+            alt="딱대 로고"
+            style={{
+              height: '50px',
+              transform: 'scale(2.7)',
+              transformOrigin: 'left center',
+              marginLeft: '15px',
+              marginTop: '10px'  // ✅ 약간 아래로 이동
+            }}
+          />
+        </Navbar.Brand>
+
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
-          <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-          </Nav>
+          {/* ✅ Home 메뉴 제거됨 */}
+          <Nav className="me-auto" />
 
-          {/* ✅ 조건부 렌더링으로 검색창 숨김 처리 */}
           {!hideSearch && (
             <Form
               className="d-flex"
@@ -71,17 +85,19 @@ const NavigationBar = ({ data, hideSearch = false }) => {
             >
               <Form.Control
                 type="search"
-                placeholder="Search"
+                placeholder="품종을 입력하세요"
                 className="me-2 custom-success"
                 aria-label="Search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleSearch();
-                }}
               />
-              <Button className="custom-button" variant="outline-success" onClick={handleSearch}>
-                Search
+              <Button
+                className="custom-button"
+                variant="outline-success"
+                onClick={handleSearch}
+                style={{ minWidth: '60px' }}
+              >
+                검색
               </Button>
             </Form>
           )}
