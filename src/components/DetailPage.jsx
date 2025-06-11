@@ -8,8 +8,8 @@ import { Card } from 'react-bootstrap';
 import NavigationBar from './NavigationBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const SERVER_URL = 'http://justick.myvnc.com:2025/justick_spring';
-//const SERVER_URL = '/justick_spring';
+// const SERVER_URL = 'http://justick.myvnc.com:2025/justick_spring';
+const SERVER_URL = '/justick_spring';
 
 const unitMap = {
   고구마: '10kg',
