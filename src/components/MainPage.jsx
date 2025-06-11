@@ -47,7 +47,7 @@ const unitMap = {
   배추: '10kg',
   감자: '20kg',
   무: '20kg',
-  토마토: '10kg'
+  토마토: '5kg'
   // 필요시 계속 추가
 };
 
@@ -304,6 +304,8 @@ const MainPage = () => {
             ))}
           </CategoryWrapper>
         </IntroSection>
+        <div ref={cardSectionRef}>
+          {isInView && (
         <motion.div
           ref={cardSectionRef}
           initial={{ opacity: 0, y: 50 }}
@@ -401,6 +403,8 @@ const MainPage = () => {
             </div>
           </CardSectionWithWeather>
         </motion.div>
+          )}
+        </div>
       </MainPageWrapper >
     </>
   );
