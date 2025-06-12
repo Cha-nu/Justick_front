@@ -164,9 +164,18 @@ const DetailPage = () => {
             };
           }
           if (card.key === '소매') {
+            let retailUnit = '(1포기 상품 기준)';
+
+            if (displayName === '고구마') retailUnit = '(1g 상품 기준)';
+            else if (displayName === '양파') retailUnit = '(1kg 상품 기준)';
+            else if (displayName === '배추') retailUnit = '(1포기 상품 기준)';
+            else if (displayName === '감자') retailUnit = '(100품 기준)';
+            else if (displayName === '무')   retailUnit = '(1개 상품 기준)';
+            else if (displayName === '토마토') retailUnit = '(1kg 상품 기준)';
+
             return {
               ...card,
-              unit: `(${unit} 상품 기준)`,  // 👈 단위 통일 적용
+              unit: retailUnit,
               price: `${retailLatest?.averagePrice?.toLocaleString() ?? '-'}원`,
               diff: `${retailDiff > 0 ? '+' : ''}${retailDiff.toLocaleString()} (${retailPercent.toFixed(1)}%)`,
               diffColor: retailDiff > 0 ? 'red' : 'blue',
