@@ -73,8 +73,8 @@ const additionalProduceList = [
 ];
 
 const GRADES = ['high', 'special'];
-//const BASE_URL = 'http://justick.myvnc.com:2025/justick_spring';
-const BASE_URL = '/justick_spring';
+const BASE_URL = 'http://justick.myvnc.com:2025/justick_spring';
+// const BASE_URL = '/justick_spring';
 const MainPage = () => {
   const navigate = useNavigate();
   const [period, setPeriod] = useState('high');
@@ -279,7 +279,7 @@ const MainPage = () => {
 
 
       <MainPageWrapper>
-        <IntroSection>
+        <IntroSection style={{ minHeight: '70vh', marginBottom: '100px' }}>
           <IntroTitle2>가락시장 도매가</IntroTitle2>
           <IntroTitle1>
             농산물 예측서비스 <span style={{ color: '#2DB400' }}>&quot;딱대&quot;</span>
