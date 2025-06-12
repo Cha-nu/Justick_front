@@ -60,17 +60,6 @@ const MonthlyGraph = ({ data, preData, showPrediction }) => {
               connectNulls={false}
             />
           )}
-          <Line
-            type="monotone"
-            dataKey="avgPrice"
-            stroke="#4287f5"
-            strokeWidth={2}
-            dot={renderDot("#4287f5")}
-            activeDot={{ r: 6 }}
-            name="현재가"
-            connectNulls={false}
-          />
-
         </LineChart>
       </ResponsiveContainer>
     </div>

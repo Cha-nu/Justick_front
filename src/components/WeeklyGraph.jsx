@@ -9,12 +9,12 @@ const WeeklyGraph = ({ data, preData, showPrediction }) => {
     ? preData.map((preItem, index) => {
       const week = data[index]?.week ?? preItem?.week ?? '';
       const sales = data[index]?.sales ?? null;
-      const preSales = preItem?.sales ?? null;
+      const prePrice = preItem?.sales ?? null;
 
       return {
         week,
         sales,
-        preSales,
+        prePrice,
       };
     })
     : data.map((item) => ({
@@ -61,17 +61,6 @@ const WeeklyGraph = ({ data, preData, showPrediction }) => {
               connectNulls={false}
             />
           )}
-          <Line
-            type="monotone"
-            dataKey="price"
-            stroke="#4287f5"
-            strokeWidth={2}
-            dot={renderDot("#4287f5")}
-            activeDot={{ r: 6 }}
-            name="현재가"
-            connectNulls={false}
-          />
-
         </LineChart>
       </ResponsiveContainer>
     </div>
