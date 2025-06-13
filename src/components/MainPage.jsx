@@ -279,7 +279,7 @@ const MainPage = () => {
 
 
       <MainPageWrapper>
-        <IntroSection style={{ minHeight: '70vh', marginBottom: '100px' }}>
+        <IntroSection>
           <IntroTitle2>가락시장 도매가</IntroTitle2>
           <IntroTitle1>
             농산물 예측서비스 <span style={{ color: '#2DB400' }}>&quot;딱대&quot;</span>
