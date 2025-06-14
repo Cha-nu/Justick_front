@@ -1,7 +1,7 @@
 # Justick Backend
 https://github.com/Cha-nu/Justick
 # Justick AI
-[https://github.com/Cha-nu/Justick](https://github.com/wjyi0615/Justick_AI)
+https://github.com/wjyi0615/Justick_AI
 # Justick System
 [[https://github.com/Cha-nu/Justick](https://github.com/wjyi0615/Justick_AI)](https://github.com/Cha-nu/Justick_system)
 
