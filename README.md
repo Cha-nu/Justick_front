@@ -4,7 +4,7 @@ https://github.com/Cha-nu/Justick
 https://github.com/wjyi0615/Justick_AI
 # Justick System
 [[https://github.com/Cha-nu/Justick](https://github.com/wjyi0615/Justick_AI)](https://github.com/Cha-nu/Justick_system)
-
+# 실행방법
 최초
 npm install
 
