@@ -5,21 +5,28 @@ import {
 } from 'recharts';
 
 const DailyGraph = ({ data, preData, showPrediction }) => {
-  const mergedData = showPrediction
-    ? preData.map((preItem, index) => {
-      const date = data[index]?.date ?? preItem?.date ?? '';
-      const price = data[index]?.price ?? null;
-      const prePrice = preItem?.price ?? null;
+    const mergeDataByDate = (data, preData) => {
+        const map = new Map();
 
-      return {
-        date,
-        price,
-        prePrice,
-      };
-    })
-    : data.map((item) => ({
-      date: item.date,
-      price: item.price ?? null,
+        data.forEach(({ date, price }) => {
+            if (!map.has(date)) map.set(date, {});
+            map.get(date).date = date;
+            map.get(date).price = price ?? null;
+        });
+
+        preData.forEach(({ date, price }) => {
+            if (!map.has(date)) map.set(date, {});
+            map.get(date).date = date;
+            map.get(date).prePrice = price ?? null;
+        });
+
+        // 날짜 기준 정렬
+        return Array.from(map.values()).sort((a, b) => new Date(a.date) - new Date(b.date));
+    };
+
+    const mergedData = showPrediction ? mergeDataByDate(data, preData) : data.map((item) => ({
+        date: item.date,
+        price: item.price ?? null,
     }));
 
   const renderDot = (color) => (props) => {
