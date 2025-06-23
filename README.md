@@ -7,6 +7,8 @@ https://github.com/Cha-nu/Justick_system
 
 # 실행방법
 최초
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
 npm install
 
 실행
