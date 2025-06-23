@@ -1,9 +1,10 @@
-# Justick Backend
-https://github.com/Cha-nu/Justick
-# Justick AI
-https://github.com/wjyi0615/Justick_AI
-# Justick System
-[[https://github.com/Cha-nu/Justick](https://github.com/wjyi0615/Justick_AI)](https://github.com/Cha-nu/Justick_system)
+# Justick Backend  
+https://github.com/Cha-nu/Justick_back  
+# Justick AI  
+https://github.com/wjyi0615/Justick_AI  
+# Justick System  
+https://github.com/Cha-nu/Justick_system  
+
 # 실행방법
 최초
 npm install
@@ -13,6 +14,10 @@ npm run dev
 
 빌드
 npm run build
+
+## 페이지 화면입니다.
+![메인페이지](https://github.com/user-attachments/assets/a2982a41-a85c-41a2-8e66-0d35ba954cef)
+
 
 # React + Vite
 
